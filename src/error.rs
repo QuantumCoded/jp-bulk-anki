@@ -13,5 +13,5 @@ pub enum Error {
     IchiMoeError(String),
 
     #[error("failed to build anki package")]
-    GenankiError(#[from] genanki_rs::Error)
+    GenankiError(#[from] genanki_rs::Error),
 }

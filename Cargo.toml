@@ -1,8 +1,8 @@
 [package]
 name = "jp-bulk-anki"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
-description = "Uses https://ichi.moe to convert bulk Japnaese input (from stdin) into an anki deck of notes"
+description = "Uses https://ichi.moe to convert bulk Japnaese input into an anki deck of notes"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

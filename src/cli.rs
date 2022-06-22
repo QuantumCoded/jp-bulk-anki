@@ -15,6 +15,7 @@ pub struct Options {
     pub deck_name: String,
     pub deck_description: String,
     pub output: PathBuf,
+    pub input: Option<PathBuf>,
 }
 
 pub fn main() -> Options {
@@ -64,6 +65,9 @@ pub fn main() -> Options {
                 }
             }
         },
+        input: args
+            .get_one::<String>("input")
+            .map(|path| PathBuf::from(path)),
     }
 }
 
@@ -112,5 +116,12 @@ fn cli() -> App<'static> {
                 .value_name("OUTPUT")
                 .index(2)
                 .required(true),
+        )
+        .arg(
+            Arg::new("input")
+                .help("Input JP text file (disables stdin)")
+                .value_name("INPUT")
+                .short('i')
+                .long("input"),
         )
 }

@@ -3,8 +3,8 @@ pub enum Error {
     #[error("invalid output path {0:?}, must contain only UTF-8")]
     InvalidOutput(std::path::PathBuf),
 
-    #[error("error reading stdin\ncaused by: {0}")]
-    StdinError(std::io::Error),
+    #[error("error reading input")]
+    InputError(#[from] std::io::Error),
 
     #[error("failed to download html from ichi.moe")]
     HttpError(#[from] reqwest::Error),

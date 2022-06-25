@@ -9,8 +9,8 @@ pub enum Error {
     #[error("failed to download html from ichi.moe")]
     HttpError(#[from] reqwest::Error),
 
-    #[error("malformed ichi.moe page {0:?}")]
-    IchiMoeError(String),
+    #[error("could not parse ichi.moe page {0:?} {1:?}")]
+    IchiMoeError(String, String),
 
     #[error("failed to build anki package")]
     GenankiError(#[from] genanki_rs::Error),

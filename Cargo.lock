@@ -664,12 +664,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "879d54834c8c76457ef4293a689b2a8c59b076067ad77b15efafbb05f92a592b"
 
 [[package]]
-name = "iter-progress"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97059d64dd4e3a8e16696f6c0be50c1d5da3a709983f39b73fd7f84f120c5cd4"
-
-[[package]]
 name = "itoa"
 version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -683,12 +677,12 @@ checksum = "112c678d4050afce233f4f2852bb2eb519230b3cf12f33585275537d7e41578d"
 
 [[package]]
 name = "jp-bulk-anki"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "clap",
  "genanki-rs",
- "iter-progress",
  "main_error",
+ "regex",
  "reqwest",
  "scraper",
  "thiserror",

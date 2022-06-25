@@ -1,3 +1,4 @@
+use crate::error::Error;
 use clap::{App, Arg};
 use std::{ffi::OsStr, path::PathBuf};
 
@@ -14,16 +15,17 @@ pub struct Options {
     pub convert_katakana_to_hiragana: bool,
     pub deck_name: String,
     pub deck_description: String,
-    pub output: PathBuf,
+    pub output: String,
     pub input: Option<PathBuf>,
+    pub writing: bool,
 }
 
-pub fn main() -> Options {
+pub fn main() -> Result<Options, Error> {
     use RomanizationMethod::*;
 
     let args = cli().get_matches();
 
-    Options {
+    Ok(Options {
         romanization_method: match args
             .get_one::<String>("romanization_method")
             .expect("RomanizationMethod has default")
@@ -52,30 +54,38 @@ pub fn main() -> Options {
             );
 
             match path.extension() {
-                Some(extension) if extension == OsStr::new("apkg") => path,
+                Some(extension) if extension == OsStr::new("apkg") => path
+                    .to_str()
+                    .ok_or(Error::InvalidOutput(path.clone()))?
+                    .to_owned(),
                 Some(extension) => {
                     let mut extension = extension.to_os_string();
                     extension.push(".apkg");
                     path.set_extension(extension);
-                    path
+                    path.to_str()
+                        .ok_or(Error::InvalidOutput(path.clone()))?
+                        .to_owned()
                 }
                 None => {
                     path.set_extension("apkg");
-                    path
+                    path.to_str()
+                        .ok_or(Error::InvalidOutput(path.clone()))?
+                        .to_owned()
                 }
             }
         },
         input: args
             .get_one::<String>("input")
             .map(|path| PathBuf::from(path)),
-    }
+        writing: args.contains_id("writing"),
+    })
 }
 
 fn cli() -> App<'static> {
     clap::command!()
         .arg(
             Arg::new("romanization_method")
-                .help("The romanization method, determines what's on the front of cards")
+                .help("The romanization method, determines what's on the front of cards when in reading mode")
                 .value_name("RomanizationMethod")
                 .short('r')
                 .long("romanization-method")
@@ -123,5 +133,12 @@ fn cli() -> App<'static> {
                 .value_name("INPUT")
                 .short('i')
                 .long("input"),
+        )
+        .arg(
+            Arg::new("writing")
+                .help("Changes the front of cards from the words reading to its writing")
+                .short('w')
+                .long("writing")
+                .conflicts_with("romanization_method")
         )
 }
